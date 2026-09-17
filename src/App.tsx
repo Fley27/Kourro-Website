@@ -6,6 +6,8 @@ import { FeaturesPage } from "./pages/Features";
 import { PricingPage } from "./pages/Pricing";
 import { AboutPage } from "./pages/About";
 import { ContactPage } from "./pages/Contact";
+import { PrivacyPage } from "./pages/Privacy";
+import { TermsPage } from "./pages/Terms";
 
 function ScrollToHash() {
   const { pathname, hash } = useLocation();
@@ -35,6 +37,8 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/kontak" element={<ContactPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </main>

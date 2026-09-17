@@ -2,6 +2,81 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Ic } from "./icon";
 
+/* ---------- Media query hook ---------- */
+export function useMediaQuery(query: string) {
+  const [m, setM] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(query).matches;
+  });
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setM(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [query]);
+  return m;
+}
+
+/* ---------- Theme (light/dark) hook ---------- */
+const STORAGE_KEY = "theme";
+const DARK_CLASS = "dark";
+
+function systemPrefersDark() {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+export function useTheme() {
+  const [dark, setDark] = useState(() => {
+    const stored = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
+    if (stored === "dark") return true;
+    if (stored === "light") return false;
+    return systemPrefersDark();
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const tc = document.querySelector('meta[name="theme-color"]');
+    if (dark) {
+      root.classList.add(DARK_CLASS);
+      root.classList.remove("light");
+      localStorage.setItem(STORAGE_KEY, "dark");
+      if (tc) tc.setAttribute("content", "#0f0d08");
+    } else {
+      root.classList.add("light");
+      root.classList.remove(DARK_CLASS);
+      localStorage.setItem(STORAGE_KEY, "light");
+      if (tc) tc.setAttribute("content", "#f6f1e4");
+    }
+    // track OS preference when the user hasn't overridden
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      const onMatch = () => setDark(mq.matches);
+      mq.addEventListener("change", onMatch);
+      return () => mq.removeEventListener("change", onMatch);
+    }
+  }, [dark]);
+
+  const toggle = () => setDark((v) => !v);
+  return { dark, toggle };
+}
+
+/* ---------- Theme toggle button ---------- */
+export function ThemeToggle() {
+  const { dark, toggle } = useTheme();
+  return (
+    <button
+      type="button"
+      className="theme-toggle"
+      onClick={toggle}
+      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-pressed={dark}
+      title={dark ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      <Ic name={dark ? "sun" : "moon"} size={19} />
+    </button>
+  );
+}
+
 /* ---------- Reveal on scroll ---------- */
 export function Reveal({
   children,
@@ -48,6 +123,45 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
   return <span className="eyebrow">{children}</span>;
 }
 
+/* ---------- Responsive image (AVIF → WebP → PNG fallback) ---------- */
+export interface ImgProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src" | "srcSet"> {
+  /** Path without extension, e.g. "/mock/register" or "/logo". */
+  srcBase: string;
+  /** Rendered width hint so the density descriptors pick the right candidate. */
+  sizes?: string;
+}
+
+export function Img({
+  srcBase,
+  alt,
+  sizes,
+  loading = "lazy",
+  decoding = "async",
+  fetchPriority,
+  className,
+  width,
+  height,
+  ...rest
+}: ImgProps) {
+  return (
+    <picture>
+      <source type="image/avif" srcSet={`${srcBase}.avif 1x, ${srcBase}@2x.avif 2x`} sizes={sizes} />
+      <source type="image/webp" srcSet={`${srcBase}.webp 1x, ${srcBase}@2x.webp 2x`} sizes={sizes} />
+      <img
+        src={`${srcBase}.png`}
+        alt={alt}
+        className={className}
+        loading={loading}
+        decoding={decoding}
+        {...(fetchPriority ? { fetchPriority } : {})}
+        {...(width ? { width } : {})}
+        {...(height ? { height } : {})}
+        {...rest}
+      />
+    </picture>
+  );
+}
+
 /* ---------- Marquee strip ---------- */
 export function Marquee({ onink, items }: { onink?: boolean; items: string[] }) {
   const row = (fi: number) => (
@@ -74,18 +188,45 @@ export function Marquee({ onink, items }: { onink?: boolean; items: string[] }) 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 24);
     on();
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
+
+  // scroll-lock + Esc-to-close when the mobile menu is open
+  useEffect(() => {
+    if (!menu) return;
+    document.documentElement.classList.add("menu-open");
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenu(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.documentElement.classList.remove("menu-open");
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menu]);
+
+  // close on outside tap (touch only)
+  useEffect(() => {
+    if (!menu) return;
+    const onDoc = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenu(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [menu]);
+
   return (
     <>
       <header className={"nav" + (scrolled ? " scrolled" : "")}>
         <div className="wrap nav-inner">
-          <Link className="brand brand-logo-only" to="/" aria-label="Kourro">
-            <img className="brand-logo" src="/logo.png" alt="" />
+          <Link className="brand brand-logo-only" to="/" aria-label="Kourro — home">
+            <Img srcBase="/logo" alt="Kourro — Built to deliver" className="brand-logo" sizes="160px" loading="eager" decoding="async" fetchPriority="high" width={978} height={256} />
           </Link>
           <nav className="nav-links">
             <Link to="/">Home</Link>
@@ -95,17 +236,28 @@ export function Nav() {
             <Link to="/contact">Contact</Link>
           </nav>
           <div className="nav-cta">
-            <Link to="/pricing" className="btn btn-ember" style={{ padding: "12px 22px", fontSize: 13.5 }}>
+            <Link to="/pricing" className="btn btn-ember">
               Get started
               <Ic name="arrow" size={15} />
             </Link>
           </div>
-          <button className="nav-burger" onClick={() => setMenu(v => !v)} aria-label="Menu">
+          <ThemeToggle />
+          <button
+            className="nav-burger"
+            onClick={() => setMenu(v => !v)}
+            aria-expanded={menu}
+            aria-controls="mobile-menu"
+            aria-label={menu ? "Close menu" : "Menu"}
+          >
             <Ic name={menu ? "close" : "menu"} size={19} />
           </button>
         </div>
       </header>
-      <div className={"mobile-menu" + (menu ? " open" : "")}>
+      <div
+        id="mobile-menu"
+        ref={menuRef}
+        className={"mobile-menu" + (menu ? " open" : "")}
+      >
         <Link to="/" onClick={() => setMenu(false)}>Home</Link>
         <Link to="/features" onClick={() => setMenu(false)}>Features</Link>
         <Link to="/pricing" onClick={() => setMenu(false)}>Pricing</Link>
@@ -128,12 +280,8 @@ export function Footer() {
       <div className="wrap">
         <div className="f-grid">
           <div className="f-brand">
-<Link className="brand" to="/">
-              <img className="brand-logo" src="/logo.png" alt="Kourro" />
-              <span className="brand-name" style={{ color: "var(--paper)" }}>
-                Kourro
-                <small style={{ color: "rgba(246,241,228,0.5)" }}>Store OS · kreyòl</small>
-              </span>
+<Link className="brand" to="/" aria-label="Kourro — home">
+              <Img srcBase="/logo" alt="Kourro — Built to deliver" className="brand-logo" sizes="220px" width={978} height={256} />
             </Link>
             <p>
               One mobile app + one web dashboard. Every gourde accounted for, every credit collected,
@@ -155,9 +303,8 @@ export function Footer() {
           </div>
           <div className="f-col">
             <h6>Legal</h6>
-            <Link to="/contact">Terms</Link>
-            <Link to="/contact">Privacy</Link>
-            <Link to="/contact">30-day money-back</Link>
+            <Link to="/terms">Terms</Link>
+            <Link to="/privacy">Privacy</Link>
           </div>
         </div>
         <div className="f-bottom">

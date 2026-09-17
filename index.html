@@ -1,11 +1,30 @@
 <!doctype html>
-<html lang="ht">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          var dark = t === "dark" || (t === null && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.classList.add(dark ? "dark" : "light");
+          var tc = document.querySelector('meta[name="theme-color"]');
+          if (tc) tc.setAttribute("content", dark ? "#0f0d08" : "#f6f1e4");
+        } catch (e) { /* storage blocked — fall back to system pref via CSS media */ }
+      })();
+    </script>
     <title>Kourro — Run your store like a boss, even when the power's out</title>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Version: v3-large-typo-720px-tablet -->
     <meta name="description" content="Kourro is the store OS built for Haiti: a POS that sells offline, credit that gets collected, and reports that account for every gourde." />
-    <meta name="theme-color" content="#14110B" />
+    <meta name="theme-color" content="#f6f1e4" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

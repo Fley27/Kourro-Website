@@ -26,7 +26,7 @@ const PLANS = [
     tier: "Pro", name: "Pro",
     tl: "The full system: credit, team, analytics, Sales, Credit, Customers, Analytics, Several Locations",
     price: "$399", per: "per year",
-    feats: ["Everything in Baz, plus:", "Up to 3 Store Locations: Manage multiple shops from one account.", 
+    feats: ["Everything in Foundation, plus:", "Up to 3 Store Locations: Manage multiple shops from one account.", 
       "Up to 10 Users Per Location: Give your team the tools they need.", 
       "Centralized Web Portal: Review your ledgers and analytics from any browser.", 
       "On-Demand Training: Professional support to get you started quickly.", 
@@ -102,12 +102,12 @@ function Anchor() {
     <section className="section" style={{ paddingTop: 0 }}>
       <div className="wrap cta-final">
         <Reveal>
-          <h2 className="display" style={{ fontSize: "clamp(30px, 3.6vw, 46px)" }}>
+          <h2 className="display display-lg mt-lg">
             Kourro pays for <em>itself.</em>
           </h2>
         </Reveal>
         <Reveal delay={120}>
-          <p className="lead" style={{ margin: "18px auto 0", maxWidth: 560 }}>
+          <p className="lead mt-md" style={{ maxWidth: 560, marginInline: "auto" }}>
             Automated reminders keep your clients accountable until their debt is zero. 
             Kourro alerts you and your management team in real-time, 
             so you can prioritize the right calls and get your money back faster.
@@ -122,6 +122,11 @@ function Anchor() {
 /* Comparison table                                                    */
 /* ------------------------------------------------------------------ */
 function Compare() {
+  const plans = [
+    { k: "b", t: "Foundation" },
+    { k: "p", t: "Pro", pop: true },
+    { k: "s", t: "Signature" },
+  ];
   const rows = [
     { f: "Managed Locations", b: "1", p: "Up to 3", s: "Unlimited" },
     { f: "Active Registers", b: "1", p: "Unlimited per store", s: "Unlimited" },
@@ -142,7 +147,7 @@ function Compare() {
         <Reveal>
           <div className="section-head center">
             <Eyebrow>Side by side</Eyebrow>
-            <h2 className="display" style={{ fontSize: "clamp(34px, 4vw, 50px)", marginTop: 18 }}>
+            <h2 className="display display-md mt-lg">
               What each plan <em>actually includes.</em>
             </h2>
           </div>
@@ -157,6 +162,41 @@ function Compare() {
               <span>{r.b}</span>
               <span className="hl">{r.p}</span>
               <span>{r.s}</span>
+            </div>
+          ))}
+        </div>
+        {/* Small screens: same data as stacked plan cards — no sideways scroll */}
+        <div className="cmp-jump" aria-hidden="true">
+          {plans.map(p => (
+            <a key={p.k} href={`#cmp-${p.k}`}>{p.t}</a>
+          ))}
+        </div>
+        <div className="cmp-cards">
+          {plans.map(p => (
+            <div key={p.k} className={"cmp-card" + (p.pop ? " pop" : "")} id={`cmp-${p.k}`}>
+              <div className="cmp-card-head">
+                <h4>{p.t}</h4>
+                {p.pop && <span className="cmp-pop">Most popular</span>}
+              </div>
+              <ul>
+                {rows.map(r => {
+                  const v = (r as Record<string, string>)[p.k];
+                  const yes = v === "✓";
+                  const no = v === "—" || v === "-";
+                  return (
+                    <li key={r.f} className={yes ? "yes" : no ? "no" : ""}>
+                      <span className="cmp-f">{r.f}</span>
+                      {yes ? (
+                        <span className="cmp-y"><Ic name="check" size={12} /></span>
+                      ) : no ? (
+                        <span className="cmp-n">—</span>
+                      ) : (
+                        <span className="cmp-v">{v}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           ))}
         </div>
@@ -175,7 +215,7 @@ function MathAndGuarantee() {
         <div style={{ maxWidth: 840, margin: "0 auto", textAlign: "center" }}>
           <Reveal>
             <Eyebrow>Do the math</Eyebrow>
-            <h2 className="display" style={{ fontSize: "clamp(32px, 3.8vw, 46px)", marginTop: 18 }}>
+            <h2 className="display display-md mt-lg">
               A system that pays for itself.
             </h2>
             <p className="lead" style={{ marginTop: 18 }}>

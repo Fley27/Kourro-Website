@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Reveal, Eyebrow, Marquee } from "../components/core";
-import { PhoneMock, TableMock, DesktopMock, DashboardMock } from "../components/mockups";
+import { Reveal, Eyebrow, Marquee, useMediaQuery } from "../components/core";
+import { PhoneMock, TableMock, DashboardMock } from "../components/mockups";
 import { Ic } from "../components/icon";
 
 /* ------------------------------------------------------------------ */
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
 function Hero() {
+  const desktop = useMediaQuery("(min-width: 768px)");
   return (
     <section className="hero" id="top">
       <div className="wrap hero-grid">
@@ -51,36 +52,36 @@ function Hero() {
         <Reveal delay={200} dir="right">
           <div className="hero-visual">
             <div className="hero-stage" aria-hidden="true" />
-            <div className="cycle">
-              <div className="cycle-slot">
-                <div className="slot-inner">
-                  <PhoneMock />
-                  <div className="slot-card">
-                    <DashboardMock variant="phone" />
+            {desktop ? (
+              /* desktop+tablet: 2-device cycle (phone with companion card + standalone tablet) */
+              <div className="cycle">
+                <div className="cycle-slot">
+                  <div className="slot-inner">
+                    <PhoneMock />
+                    <div className="slot-card">
+                      <DashboardMock variant="phone" />
+                    </div>
+                  </div>
+                </div>
+                <div className="cycle-slot">
+                  <div className="slot-inner slot-inner-tablet">
+                    <TableMock />
                   </div>
                 </div>
               </div>
-              <div className="cycle-slot">
-                <div className="slot-inner">
-                  <TableMock />
-                  <div className="slot-card">
-                    <DashboardMock variant="tablet" />
+            ) : (
+              /* mobile: single lightweight phone mock, no cycle */
+              <div className="cycle cycle-mobile">
+                <div className="cycle-slot">
+                  <div className="slot-inner">
+                    <PhoneMock />
                   </div>
                 </div>
               </div>
-              <div className="cycle-slot">
-                <div className="slot-inner">
-                  <DesktopMock />
-                  <div className="slot-card">
-                    <DashboardMock variant="desktop" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="cycle-dots">
-              <span aria-hidden="true" />
-              <span aria-hidden="true" />
-              <span aria-hidden="true" />
+            )}
+            <div className="cycle-dots" aria-hidden="true">
+              <span />
+              <span />
             </div>
           </div>
         </Reveal>
@@ -90,60 +91,147 @@ function Hero() {
 }
 
 /* ------------------------------------------------------------------ */
-/* The way it works today — story of a normal Wednesday                */
+/* Premium Keynote Storytelling: A Day in the Life                    */
 /* ------------------------------------------------------------------ */
 function Story() {
+  const storyActs = [
+    {
+      time: "08:30 AM",
+      phase: "Morning Opening",
+      title: "Where did the ledger go?",
+      narrative: "A torn page or spilled coffee shouldn't erase six months of customer balances. Kourro seals every single sale into an immutable digital record the second it is tapped.",
+      visual: (
+        <div className="story-jewel-ledger">
+          <div className="sjl-header">
+            <span className="sjl-tag">Immutable Record</span>
+            <span className="sjl-status">✓ Synced</span>
+          </div>
+          <div className="sjl-amount">G 2,450.00</div>
+          <div className="sjl-meta">TX #0842 · French Flour 50kg · Paid in full</div>
+        </div>
+      ),
+      metric: "100% Tamper-Proof Trail",
+    },
+    {
+      time: "01:15 PM",
+      phase: "Midday Blackout",
+      title: "When the power cuts, sales flow.",
+      narrative: "When city power cuts, traditional cloud cashiers freeze and lines stall. Kourro runs 100% locally with zero latency, printing receipts and scanning items without internet.",
+      visual: (
+        <div className="story-jewel-offline">
+          <div className="sjo-status-row">
+            <span className="sjo-pulse" />
+            <span className="sjo-title">Local Engine Active</span>
+            <span className="sjo-time">0ms Latency</span>
+          </div>
+          <div className="sjo-bar-track">
+            <div className="sjo-bar-fill" />
+          </div>
+          <div className="sjo-sub">100% Offline Transaction Buffer</div>
+        </div>
+      ),
+      metric: "Zero-Downtime Guarantee",
+    },
+    {
+      time: "06:45 PM",
+      phase: "Evening Shift Close",
+      title: "Zero mystery deficits at closing.",
+      narrative: "No more guessing where the missing cash went. The physical drawer is counted and matched against registered sales in seconds, ending end-of-day finger-pointing forever.",
+      visual: (
+        <div className="story-jewel-audit">
+          <div className="sja-row">
+            <span>Expected in Drawer</span>
+            <strong>G 54,120</strong>
+          </div>
+          <div className="sja-row highlight">
+            <span>Counted Physical Cash</span>
+            <strong className="sja-matched">G 54,120 ✓</strong>
+          </div>
+          <div className="sja-diff">
+            <span>Discrepancy</span>
+            <span className="sja-zero">0.00 Perfect</span>
+          </div>
+        </div>
+      ),
+      metric: "100% Drawer Accuracy",
+    },
+  ];
+
   return (
-    <section className="section" id="story">
-      <div className="wrap story-grid">
-        <div>
+    <section className="section apple-story-section" id="story">
+      <div className="wrap">
+        {/* Cinematic Section Header with Generous Breathing Room */}
+        <div className="apple-story-head">
           <Reveal>
-            <Eyebrow>The cost of guessing.</Eyebrow>
-            <h2 className="display" style={{ fontSize: "clamp(36px, 4.4vw, 56px)", marginTop: 18 }}>
+            <Eyebrow>A Day in the Life · The Cost of Guessing</Eyebrow>
+            <h2 className="display display-md mt-lg">
               The traditional way of running a store is <em>fragmented.</em>
             </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="lead" style={{ marginTop: 22 }}>
-              Sales are split between notebooks and memory. Credit is a conversation where 
-              the customer remembers <em> the price differently </em>than the owner does. By the time 
-              the doors close, <em>the discrepancy</em> between the cash in the drawer 
-              and the sales on the page is an <em>unsolved mystery</em>.
+            <p className="lead mt-lg apple-story-lead">
+              Sales split between paper ledgers and memory. Handshake credit remembered differently across the counter.
+              By closing time, the missing gourdes in the drawer become an unsolved mystery.
             </p>
-          </Reveal>
-          <Reveal delay={200}>
-            <p className="prob-punch">
-              This lack of visibility isn't a tradition, it's a <em>liability</em>. It’s a leak in 
-              your profit. When you stop <em>recording the truth</em>, you stop growing.
-              It's time to replace the notebook with a system that never forgets.
-            </p>
-          </Reveal>
-          <Reveal delay={240}>
-            <p className="prob-punch" style={{ marginTop: 22 }}>
-               It's time for <strong><em>KOURRO.</em></strong>
-            </p>
-          </Reveal>
-          <Reveal delay={280}>
-            <Link to="/about" className="btn btn-ink" style={{ marginTop: 30 }}>
-              Why we built Kourro <Ic name="arrow" size={15} />
-            </Link>
           </Reveal>
         </div>
-        <div className="prob-list">
-          {[
-            { n: "01", t: "Fragile Records: Paper ledgers that are easily lost, altered, or incomplete." },
-            { n: "02", t: "Cash Leakage: Discrepancies in the drawer with no digital trail to explain the loss." },
-            { n: "03", t: "Credit Conflict: Handshake agreements that lead to disagreements over totals." },
-            { n: "04", t: "The Cloud Illusion: Software that requires a connection you can't always trust." },
-          ].map((r, i) => (
-            <Reveal key={r.n} delay={i * 70}>
-              <div className="prob-row">
-                <span className="n">{r.n}</span>
-                <p>{r.t}</p>
+
+        {/* Spacious, Translucent Glassmorphic Bento Cards */}
+        <div className="apple-story-bento">
+          {storyActs.map((act, i) => (
+            <Reveal key={act.time} delay={i * 120}>
+              <div className="apple-story-card">
+                {/* Header Phase Pill */}
+                <div className="story-card-top">
+                  <div className="story-time-pill">
+                    <span className="story-time-dot" />
+                    <strong>{act.time}</strong>
+                    <span className="story-time-phase">· {act.phase}</span>
+                  </div>
+                </div>
+
+                {/* Main Headline */}
+                <h3 className="story-card-title">{act.title}</h3>
+
+                {/* Jewel-like UI Visual Artifact */}
+                <div className="story-card-jewel-wrap">
+                  {act.visual}
+                </div>
+
+                {/* Narrative Description */}
+                <p className="story-card-narrative">{act.narrative}</p>
+
+                {/* Clean Bottom Metric Tag */}
+                <div className="story-card-footer">
+                  <span className="story-metric-pill">
+                    <Ic name="check" size={12} /> {act.metric}
+                  </span>
+                </div>
               </div>
             </Reveal>
           ))}
         </div>
+
+        {/* Minimalist Floating Banner */}
+        <Reveal delay={180}>
+          <div className="apple-story-banner">
+            <div className="as-banner-content">
+              <span className="as-banner-eyebrow">The Kourro Standard</span>
+              <h3 className="as-banner-title">
+                This lack of visibility isn't tradition. <em>It's a profit leak.</em>
+              </h3>
+              <p className="as-banner-desc">
+                When you stop recording the truth, you stop growing. Replace the fragile notebook with an operating system engineered to protect every gourde.
+              </p>
+            </div>
+            <div className="as-banner-actions">
+              <Link to="/about" className="btn btn-primary">
+                Why we built Kourro <Ic name="arrow" size={15} />
+              </Link>
+              <Link to="/features" className="btn btn-outline">
+                Explore the platform
+              </Link>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -159,7 +247,7 @@ function Change() {
         <Reveal>
           <div className="section-head">
             <Eyebrow>The Kourro Effect.</Eyebrow>
-            <h2 className="display" style={{ fontSize: "clamp(34px, 4.4vw, 54px)", marginTop: 18 }}>
+            <h2 className="display display-md mt-lg">
               Same store, same team. <em style={{ color: "var(--gold)" }}>Higher profits. Better results.</em>
             </h2>
           </div>
@@ -211,7 +299,7 @@ function Outcomes() {
   return (
     <section className="section" id="outcomes">
       <div className="wrap">
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
+        <div className="outcome-grid">
           {items.map((it, i) => (
             <Reveal key={it.t} delay={i * 90}>
               <div className="feat">
@@ -243,22 +331,22 @@ function Plans() {
   return (
     <section className="onink section" id="plans">
       <div className="wrap">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center" }}>
+        <div className="plans-teaser">
           <Reveal>
             <Eyebrow>Tailored for Every Stage.</Eyebrow>
-            <h2 className="display" style={{ fontSize: "clamp(34px, 4vw, 50px)", marginTop: 18 }}>
+            <h2 className="display display-md mt-lg">
               From your first register to <em style={{ color: "var(--gold)" }}>a multi-store enterprise.</em>
             </h2>
-            <p className="lead" style={{ marginTop: 18, color: "rgba(246,241,228,0.7)" }}>
+            <p className="lead mt-md" style={{ color: "var(--paper)" }}>
                 Whether you're managing one location or scaling a retail chain, <em>Kourro</em> has a path for you. 
                 Start with a single store and unlock the power of credit tracking and multi-store analytics 
                 as your business expands.
             </p>
-            <Link to="/pricing" className="btn btn-ember" style={{ marginTop: 28 }}>
+            <Link to="/pricing" className="btn btn-ember mt-lg">
               Compare plans & pricing <Ic name="arrow" size={15} />
             </Link>
           </Reveal>
-          <div style={{ display: "grid", gap: 12 }}>
+          <div className="plans-strips">
             {[
               { t: "Foundation", d: "One location, 5 users. Every gourde is accounted for.", p: "from $199/year" },
               { t: "Pro", d: "Up to 3 locations, 10 users per store, Better Credits management", p: "from $399/year" },
@@ -295,14 +383,14 @@ function FinalCta() {
           </div>
         </Reveal>
         <Reveal delay={100}>
-          <p className="lead" style={{ margin: "22px auto 36px", maxWidth: 500 }}>
+          <p className="lead" style={{ margin: "var(--s-6) auto var(--s-7)", maxWidth: 500 }}>
               Our plans are billed annually to provide you with uninterrupted service. 
               We provide a 7-day window for full refunds to ensure our system meets your expectations. 
               As always, your data remains your property.
           </p>
         </Reveal>
         <Reveal delay={200}>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "var(--s-4)", justifyContent: "center", flexWrap: "wrap" }}>
             <Link to="/pricing" className="btn btn-ember">Choose your plan <Ic name="arrow" size={15} /></Link>
             <Link to="/contact" className="btn btn-ghost">Talk to us first</Link>
           </div>

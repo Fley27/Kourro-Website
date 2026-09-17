@@ -16,17 +16,17 @@ function LeadForm() {
     <form className="c-form lead-form" onSubmit={submit} id="demo">
       <div>
         <Eyebrow>Book a free demo</Eyebrow>
-        <h1 className="display" style={{ fontSize: "clamp(34px, 4vw, 52px)", marginTop: 16 }}>
+        <h1 className="display display-md mt-lg">
           See it on your store, <em>then decide.</em>
         </h1>
-        <p className="lead" style={{ fontSize: 15, marginTop: 14 }}>
+        <p className="lead mt-sm" style={{ fontSize: 15 }}>
           20 minutes, in Creole, no pressure. We show the register and the dashboard on your type
           of store.
         </p>
       </div>
       {sent ? (
         <div style={{ padding: 22, borderRadius: 16, background: "rgba(200,162,74,0.12)", border: "1px solid rgba(200,162,74,0.4)" }}>
-          <b>Mèsi! We received it.</b> Someone will contact you within one business day to set the
+          <b>Thank you! We received it.</b> Someone will contact you within one business day to set the
           demo time.
         </div>
       ) : (
@@ -140,7 +140,7 @@ function Side() {
             <Ic name="hat" size={20} />
           </div>
           <h3 className="display" style={{ fontSize: 22, fontWeight: 600 }}>Building something bigger?</h3>
-          <p style={{ marginTop: 10, fontSize: 13.5, lineHeight: 1.7, color: "rgba(246,241,228,0.72)" }}>
+          <p style={{ marginTop: 10, fontSize: 13.5, lineHeight: 1.7, color: "var(--paper)" }}>
             Franchises, multi-store groups, custom workflows, or migrating years of paper records —
             that's what Signature is for. We'll come to you.
           </p>
@@ -185,7 +185,7 @@ function Faq() {
       <div className="wrap">
         <Reveal>
           <Eyebrow>Questions owners ask us</Eyebrow>
-          <h2 className="display" style={{ fontSize: "clamp(32px, 3.8vw, 46px)", marginTop: 18, marginBottom: 34 }}>
+          <h2 className="display display-md mt-lg" style={{ marginBottom: "var(--s-7)" }}>
             Short answers, <em>no jargon.</em>
           </h2>
         </Reveal>
