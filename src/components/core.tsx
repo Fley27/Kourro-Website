@@ -21,16 +21,12 @@ export function useMediaQuery(query: string) {
 const STORAGE_KEY = "theme";
 const DARK_CLASS = "dark";
 
-function systemPrefersDark() {
-  return typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
 export function useTheme() {
   const [dark, setDark] = useState(() => {
-    const stored = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
-    if (stored === "dark") return true;
+    if (typeof window === "undefined") return true;
+    const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === "light") return false;
-    return systemPrefersDark();
+    return true; // dark is the default; only an explicit "light" opts out
   });
 
   useEffect(() => {
@@ -46,13 +42,6 @@ export function useTheme() {
       root.classList.remove(DARK_CLASS);
       localStorage.setItem(STORAGE_KEY, "light");
       if (tc) tc.setAttribute("content", "#f6f1e4");
-    }
-    // track OS preference when the user hasn't overridden
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      const onMatch = () => setDark(mq.matches);
-      mq.addEventListener("change", onMatch);
-      return () => mq.removeEventListener("change", onMatch);
     }
   }, [dark]);
 

@@ -8,7 +8,7 @@
       (function () {
         try {
           var t = localStorage.getItem("theme");
-          var dark = t === "dark" || (t === null && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var dark = t !== "light";
           document.documentElement.classList.add(dark ? "dark" : "light");
           var tc = document.querySelector('meta[name="theme-color"]');
           if (tc) tc.setAttribute("content", dark ? "#0f0d08" : "#f6f1e4");
@@ -31,7 +31,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <script type="module" crossorigin src="/assets/index-Bi1gT3Qq.js"></script>
+    <script type="module" crossorigin src="/assets/index-ChBTKaYc.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-bRbuOe3M.css">
   </head>
   <body>
