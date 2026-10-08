@@ -3600,259 +3600,240 @@ html.dark .v-crm-history {
   line-height: 1.7;
 }
 
-.apple-story-bento {
+/* ---------- Editorial day grid: three equal columns split by gutter rules ---------- */
+.day-grid {
+  --day-gap: clamp(28px, 3.2vw, 56px);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(24px, 3vw, 36px);
+  column-gap: var(--day-gap);
   margin-bottom: clamp(48px, 6vw, 72px);
-  align-items: stretch;
 }
 
-.apple-story-card {
+.day-col {
   position: relative;
-  border-radius: 28px;
-  background: var(--paper-2);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 8px 28px -8px rgba(22, 19, 12, 0.04);
-  padding: clamp(28px, 3.2vw, 40px);
   display: flex;
   flex-direction: column;
-  height: 100%;
-  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
-  box-sizing: border-box;
 }
 
-html.dark .apple-story-card {
-  background: var(--paper-2);
-  border-color: var(--color-border);
-  box-shadow: 0 8px 28px -8px rgba(0, 0, 0, 0.45);
+/* hairline sits centered in the gutter, so every column stays the same width */
+.day-col + .day-col::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--day-gap) / -2);
+  width: 1px;
+  background: var(--color-border);
 }
 
-.apple-story-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px -10px rgba(22, 19, 12, 0.07);
+/* Ember tick sets the rhythm above each act */
+.day-tick {
+  display: block;
+  width: 36px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  margin-bottom: 18px;
 }
 
-html.dark .apple-story-card:hover {
-  box-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.6);
-}
-
-/* Card Top Metadata */
-.story-card-top {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.story-time-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--color-fg);
-  background: rgba(22, 19, 12, 0.04);
-  padding: 5px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(22, 19, 12, 0.05);
-}
-
-html.dark .story-time-pill {
-  background: rgba(246, 241, 228, 0.05);
-  border-color: rgba(246, 241, 228, 0.08);
-  color: var(--paper);
-}
-
-.story-time-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--ember);
-}
-
-.story-time-phase {
-  color: var(--color-fg-soft);
+.day-time {
+  display: block;
+  font-size: clamp(30px, 3vw, 42px);
   font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
 }
 
-/* Main Card Title */
-.story-card-title {
+.day-phase {
+  display: block;
+  margin-top: 10px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.day-rule {
+  display: block;
+  height: 1px;
+  background: var(--color-border);
+  margin: 22px 0 24px;
+}
+
+/* Act headline — reserves two lines so the artifacts below stay aligned */
+.day-title {
   font-family: var(--serif);
-  font-size: 22px;
+  min-height: 2.5em;
+  font-size: clamp(21px, 1.7vw, 25px);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.25;
   color: var(--color-fg);
-  margin-bottom: 12px;
+  margin-bottom: 18px;
 }
 
-/* Jewel Artifact Container */
-.story-card-jewel-wrap {
-  margin: 14px 0 18px;
-  padding: 16px 18px;
+/* ---------- Shared UI excerpt: one frame, three bodies ---------- */
+.art {
+  background: var(--color-surface);
   border-radius: 16px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  padding: 15px 17px 17px;
+  margin-bottom: 20px;
+  box-shadow: 0 16px 34px -28px rgba(22, 19, 12, 0.6);
 }
 
-html.dark .story-card-jewel-wrap {
-  background: var(--color-surface);
-  border-color: var(--color-border);
-}
+html.dark .art { box-shadow: 0 16px 34px -28px rgba(0, 0, 0, 0.9); }
 
-/* Jewel 1: Ledger Record */
-.story-jewel-ledger {
+.art-head {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.sjl-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 11px;
+  margin-bottom: 13px;
+  border-bottom: 1px solid var(--line);
 }
 
-.sjl-tag {
-  font-size: 10px;
+.art-label {
+  font-size: 9.5px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-fg-soft);
+  color: var(--color-muted);
 }
 
-.sjl-status {
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--success);
-  background: var(--success-soft);
-  padding: 2px 7px;
-  border-radius: 999px;
-}
-
-.sjl-amount {
-  font-family: var(--serif);
-  font-size: 23px;
-  font-weight: 600;
-  color: var(--color-fg);
-  letter-spacing: -0.02em;
-  margin-top: 4px;
-}
-
-.sjl-meta {
-  font-size: 11px;
-  color: var(--color-fg-soft);
-  font-weight: 500;
-}
-
-/* Jewel 2: Offline Engine */
-.story-jewel-offline {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.sjo-status-row {
-  display: flex;
+.art-status {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--success);
+  white-space: nowrap;
 }
 
-.sjo-pulse {
+.art-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 0 2px var(--success-soft);
-  animation: livePulse 2s infinite;
+  background: currentColor;
+  box-shadow: 0 0 0 3px var(--success-soft);
 }
 
-.sjo-title { color: var(--color-fg); }
-.sjo-time { margin-left: auto; color: var(--success); font-weight: 800; }
+.art-status.live .art-dot { animation: livePulse 2.2s ease-in-out infinite; }
 
-.sjo-bar-track {
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--success-soft); }
+  50%      { box-shadow: 0 0 0 6px var(--success-soft); }
+}
+
+.art-figure {
+  font-size: clamp(23px, 2vw, 27px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.art-fig-unit {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  vertical-align: 4px;
+}
+
+.art-sub {
+  margin-top: 7px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--color-fg-soft);
+}
+
+.art-bar {
   height: 6px;
   border-radius: 999px;
-  background: rgba(22, 19, 12, 0.06);
+  background: rgba(22, 19, 12, 0.07);
   overflow: hidden;
+  margin-top: 15px;
 }
 
-html.dark .sjo-bar-track { background: rgba(246, 241, 228, 0.08); }
+html.dark .art-bar { background: rgba(241, 235, 224, 0.09); }
 
-.sjo-bar-fill {
+.art-bar i {
+  display: block;
   height: 100%;
   width: 100%;
   border-radius: inherit;
   background: var(--success);
 }
 
-.sjo-sub {
-  font-size: 10.5px;
-  color: var(--color-fg-soft);
-  font-weight: 600;
+.art-caption {
+  margin-top: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-/* Jewel 3: Shift Audit */
-.story-jewel-audit {
+.art-rows {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 11.5px;
+  gap: 9px;
 }
 
-.sja-row {
+.art-row {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
+  gap: 12px;
+  font-size: 12.5px;
   color: var(--color-fg-soft);
 }
 
-.sja-row strong { color: var(--color-fg); }
-
-.sja-row.highlight strong {
-  color: var(--success);
+.art-row strong {
+  font-weight: 700;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.sja-zero { color: var(--success); }
+.art-row strong.ok { color: var(--success); }
 
-.sja-diff {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 6px;
-  border-top: 1px solid rgba(22, 19, 12, 0.06);
+.art-row.total {
+  margin-top: 3px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
   font-weight: 800;
+  color: var(--color-fg);
 }
 
-html.dark .sja-diff { border-top-color: rgba(246, 241, 228, 0.08); }
-
-/* Narrative Text */
-.story-card-narrative {
+/* Narrative + closing metric */
+.day-narrative {
   font-size: 13.5px;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--color-fg-soft);
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
-/* Card Footer */
-.story-card-footer {
+.day-metric {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   margin-top: auto;
   padding-top: 16px;
-  border-top: 1px solid rgba(22, 19, 12, 0.06);
-}
-
-html.dark .story-card-footer {
-  border-top-color: rgba(246, 241, 228, 0.08);
-}
-
-.story-metric-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  border-top: 1px solid var(--color-border);
   font-size: 11.5px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--color-accent);
 }
 
@@ -3939,8 +3920,15 @@ html.dark .as-banner-actions .btn-outline { color: var(--ink); }
 }
 
 @media (max-width: 960px) {
-  .apple-story-bento {
+  .day-grid {
     grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+  .day-col + .day-col::before { display: none; }
+  .day-col + .day-col {
+    border-top: 1px solid var(--color-border);
+    margin-top: clamp(30px, 7vw, 44px);
+    padding-top: clamp(26px, 6vw, 38px);
   }
   .apple-story-banner {
     flex-direction: column;

@@ -101,13 +101,13 @@ function Story() {
       title: "Where did the ledger go?",
       narrative: "A torn page or spilled coffee shouldn't erase six months of customer balances. Kourro seals every single sale into an immutable digital record the second it is tapped.",
       visual: (
-        <div className="story-jewel-ledger">
-          <div className="sjl-header">
-            <span className="sjl-tag">Immutable Record</span>
-            <span className="sjl-status">✓ Synced</span>
+        <div className="art">
+          <div className="art-head">
+            <span className="art-label">Immutable Record</span>
+            <span className="art-status"><span className="art-dot" />Synced</span>
           </div>
-          <div className="sjl-amount">G 2,450.00</div>
-          <div className="sjl-meta">TX #0842 · French Flour 50kg · Paid in full</div>
+          <div className="art-figure">G 2,450.00</div>
+          <div className="art-sub">TX #0842 · French Flour 50kg · Paid in full</div>
         </div>
       ),
       metric: "100% Tamper-Proof Trail",
@@ -118,16 +118,14 @@ function Story() {
       title: "When the power cuts, sales flow.",
       narrative: "When city power cuts, traditional cloud cashiers freeze and lines stall. Kourro runs 100% locally with zero latency, printing receipts and scanning items without internet.",
       visual: (
-        <div className="story-jewel-offline">
-          <div className="sjo-status-row">
-            <span className="sjo-pulse" />
-            <span className="sjo-title">Local Engine Active</span>
-            <span className="sjo-time">0ms Latency</span>
+        <div className="art">
+          <div className="art-head">
+            <span className="art-label">Local Engine</span>
+            <span className="art-status live"><span className="art-dot" />Active</span>
           </div>
-          <div className="sjo-bar-track">
-            <div className="sjo-bar-fill" />
-          </div>
-          <div className="sjo-sub">100% Offline Transaction Buffer</div>
+          <div className="art-figure">0ms<span className="art-fig-unit">Latency</span></div>
+          <div className="art-bar"><i /></div>
+          <div className="art-caption">100% Offline Transaction Buffer</div>
         </div>
       ),
       metric: "Zero-Downtime Guarantee",
@@ -138,18 +136,24 @@ function Story() {
       title: "Zero mystery deficits at closing.",
       narrative: "No more guessing where the missing cash went. The physical drawer is counted and matched against registered sales in seconds, ending end-of-day finger-pointing forever.",
       visual: (
-        <div className="story-jewel-audit">
-          <div className="sja-row">
-            <span>Expected in Drawer</span>
-            <strong>G 54,120</strong>
+        <div className="art">
+          <div className="art-head">
+            <span className="art-label">Shift Close</span>
+            <span className="art-status"><span className="art-dot" />Matched</span>
           </div>
-          <div className="sja-row highlight">
-            <span>Counted Physical Cash</span>
-            <strong className="sja-matched">G 54,120 ✓</strong>
-          </div>
-          <div className="sja-diff">
-            <span>Discrepancy</span>
-            <span className="sja-zero">0.00 Perfect</span>
+          <div className="art-rows">
+            <div className="art-row">
+              <span>Expected in Drawer</span>
+              <strong>G 54,120</strong>
+            </div>
+            <div className="art-row">
+              <span>Counted Physical Cash</span>
+              <strong className="ok">G 54,120 ✓</strong>
+            </div>
+            <div className="art-row total">
+              <span>Discrepancy</span>
+              <strong className="ok">0.00 Perfect</strong>
+            </div>
           </div>
         </div>
       ),
@@ -174,38 +178,24 @@ function Story() {
           </Reveal>
         </div>
 
-        {/* Spacious, Translucent Glassmorphic Bento Cards */}
-        <div className="apple-story-bento">
+        {/* Editorial 3-column day grid — hairline rules, no cards */}
+        <div className="day-grid">
           {storyActs.map((act, i) => (
-            <Reveal key={act.time} delay={i * 120}>
-              <div className="apple-story-card">
-                {/* Header Phase Pill */}
-                <div className="story-card-top">
-                  <div className="story-time-pill">
-                    <span className="story-time-dot" />
-                    <strong>{act.time}</strong>
-                    <span className="story-time-phase">· {act.phase}</span>
-                  </div>
-                </div>
+            <Reveal key={act.time} delay={i * 120} className="day-col">
+              <span className="day-tick" aria-hidden="true" />
+              <span className="day-time">{act.time}</span>
+              <span className="day-phase">{act.phase}</span>
+              <span className="day-rule" aria-hidden="true" />
 
-                {/* Main Headline */}
-                <h3 className="story-card-title">{act.title}</h3>
+              <h3 className="day-title">{act.title}</h3>
 
-                {/* Jewel-like UI Visual Artifact */}
-                <div className="story-card-jewel-wrap">
-                  {act.visual}
-                </div>
+              {act.visual}
 
-                {/* Narrative Description */}
-                <p className="story-card-narrative">{act.narrative}</p>
+              <p className="day-narrative">{act.narrative}</p>
 
-                {/* Clean Bottom Metric Tag */}
-                <div className="story-card-footer">
-                  <span className="story-metric-pill">
-                    <Ic name="check" size={12} /> {act.metric}
-                  </span>
-                </div>
-              </div>
+              <span className="day-metric">
+                <Ic name="check" size={12} /> {act.metric}
+              </span>
             </Reveal>
           ))}
         </div>
