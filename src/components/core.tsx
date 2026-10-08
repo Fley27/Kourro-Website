@@ -315,7 +315,7 @@ export function Footer() {
         <div className="f-grid">
           <div className="f-brand">
 <Link className="brand" to="/" aria-label="Kourro — home">
-              <img src="/logo-white.svg" alt="Kourro — Built to deliver" className="brand-logo" width={978} height={256} />
+              <img src="/logo.svg" alt="Kourro — Built to deliver" className="brand-logo" width={978} height={256} />
             </Link>
             <p>
               One mobile app + one web dashboard. Every gourde accounted for, every credit collected,
