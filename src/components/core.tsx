@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Ic } from "./icon";
 
 /* ---------- Media query hook ---------- */
@@ -17,35 +17,54 @@ export function useMediaQuery(query: string) {
   return m;
 }
 
-/* ---------- Theme (light/dark) hook ---------- */
+/* ---------- Theme (light/dark) hook ----------
+   Module-level store so every ThemeToggle instance (header + menu) stays in sync. */
 const STORAGE_KEY = "theme";
 const DARK_CLASS = "dark";
 
+function readDark() {
+  try {
+    return localStorage.getItem(STORAGE_KEY) !== "light"; // dark is the default
+  } catch {
+    return true;
+  }
+}
+
+let darkSnapshot = typeof window === "undefined" ? true : readDark();
+const themeListeners = new Set<(dark: boolean) => void>();
+
+function applyTheme(dark: boolean) {
+  const root = document.documentElement;
+  const tc = document.querySelector('meta[name="theme-color"]');
+  if (dark) {
+    root.classList.add(DARK_CLASS);
+    root.classList.remove("light");
+    try { localStorage.setItem(STORAGE_KEY, "dark"); } catch { /* storage blocked */ }
+    if (tc) tc.setAttribute("content", "#0f0d08");
+  } else {
+    root.classList.add("light");
+    root.classList.remove(DARK_CLASS);
+    try { localStorage.setItem(STORAGE_KEY, "light"); } catch { /* storage blocked */ }
+    if (tc) tc.setAttribute("content", "#f6f1e4");
+  }
+}
+
 export function useTheme() {
-  const [dark, setDark] = useState(() => {
-    if (typeof window === "undefined") return true;
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === "light") return false;
-    return true; // dark is the default; only an explicit "light" opts out
-  });
+  const [dark, setDark] = useState(darkSnapshot);
 
   useEffect(() => {
-    const root = document.documentElement;
-    const tc = document.querySelector('meta[name="theme-color"]');
-    if (dark) {
-      root.classList.add(DARK_CLASS);
-      root.classList.remove("light");
-      localStorage.setItem(STORAGE_KEY, "dark");
-      if (tc) tc.setAttribute("content", "#0f0d08");
-    } else {
-      root.classList.add("light");
-      root.classList.remove(DARK_CLASS);
-      localStorage.setItem(STORAGE_KEY, "light");
-      if (tc) tc.setAttribute("content", "#f6f1e4");
-    }
-  }, [dark]);
+    applyTheme(darkSnapshot);
+    const onChange = (d: boolean) => setDark(d);
+    themeListeners.add(onChange);
+    return () => { themeListeners.delete(onChange); };
+  }, []);
 
-  const toggle = () => setDark((v) => !v);
+  const toggle = () => {
+    darkSnapshot = !darkSnapshot;
+    applyTheme(darkSnapshot);
+    themeListeners.forEach(fn => fn(darkSnapshot));
+  };
+
   return { dark, toggle };
 }
 
@@ -200,22 +219,34 @@ export function Nav() {
     };
   }, [menu]);
 
-  // close on outside tap (touch only)
+  // close on tap outside the menu (the header manages its own taps:
+  // logo closes via onClick, the burger toggles — so don't pre-close on it)
   useEffect(() => {
     if (!menu) return;
     const onDoc = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenu(false);
+      const t = e.target as Element | null;
+      if (!t || (menuRef.current && menuRef.current.contains(t))) return;
+      if (t.closest && t.closest(".nav")) return;
+      setMenu(false);
     };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
   }, [menu]);
 
+  const links = [
+    { to: "/", label: "Home" },
+    { to: "/features", label: "Features" },
+    { to: "/pricing", label: "Pricing" },
+    { to: "/about", label: "About" },
+    { to: "/contact", label: "Contact" },
+  ];
+
   return (
     <>
       <header className={"nav" + (scrolled ? " scrolled" : "")}>
         <div className="wrap nav-inner">
-          <Link className="brand brand-logo-only" to="/" aria-label="Kourro — home">
-            <Img srcBase="/logo" alt="Kourro — Built to deliver" className="brand-logo" sizes="160px" loading="eager" decoding="async" fetchPriority="high" width={978} height={256} />
+          <Link className="brand brand-logo-only" to="/" aria-label="Kourro — home" onClick={() => setMenu(false)}>
+            <img src="/logo.svg" alt="Kourro — Built to deliver" className="brand-logo" loading="eager" decoding="async" fetchPriority="high" width={978} height={256} />
           </Link>
           <nav className="nav-links">
             <Link to="/">Home</Link>
@@ -246,16 +277,30 @@ export function Nav() {
         id="mobile-menu"
         ref={menuRef}
         className={"mobile-menu" + (menu ? " open" : "")}
+        aria-hidden={!menu}
       >
-        <Link to="/" onClick={() => setMenu(false)}>Home</Link>
-        <Link to="/features" onClick={() => setMenu(false)}>Features</Link>
-        <Link to="/pricing" onClick={() => setMenu(false)}>Pricing</Link>
-        <Link to="/about" onClick={() => setMenu(false)}>About</Link>
-        <Link to="/contact" onClick={() => setMenu(false)}>Contact</Link>
-        <div style={{ marginTop: 30 }}>
+        <nav className="mm-links">
+          {links.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === "/"}
+              onClick={() => setMenu(false)}
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              {label}
+            </NavLink>
+          ))}
+        </nav>
+        <div className="mm-foot">
           <Link to="/pricing" className="btn btn-ember" onClick={() => setMenu(false)}>
-            Get started · Choose membership <Ic name="arrow" size={15} />
+            Get started
+            <Ic name="arrow" size={16} />
           </Link>
+          <div className="mm-bar">
+            <span className="mm-label">Appearance</span>
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </>
@@ -270,7 +315,7 @@ export function Footer() {
         <div className="f-grid">
           <div className="f-brand">
 <Link className="brand" to="/" aria-label="Kourro — home">
-              <Img srcBase="/logo" alt="Kourro — Built to deliver" className="brand-logo" sizes="220px" width={978} height={256} />
+              <img src="/logo-white.svg" alt="Kourro — Built to deliver" className="brand-logo" width={978} height={256} />
             </Link>
             <p>
               One mobile app + one web dashboard. Every gourde accounted for, every credit collected,
