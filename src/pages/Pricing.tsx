@@ -61,6 +61,7 @@ function Plans() {
   return (
     <section className="section" id="plans" style={{ paddingTop: 190 }}>
       <div className="wrap">
+        <h1 className="sr-only">Kourro pricing</h1>
         <div className="plans">
           {PLANS.map((p, i) => (
             <Reveal key={p.name} delay={i * 100}>
@@ -166,11 +167,11 @@ function Compare() {
           ))}
         </div>
         {/* Small screens: same data as stacked plan cards — no sideways scroll */}
-        <div className="cmp-jump" aria-hidden="true">
+        <nav className="cmp-jump" aria-label="Jump to plan">
           {plans.map(p => (
             <a key={p.k} href={`#cmp-${p.k}`}>{p.t}</a>
           ))}
-        </div>
+        </nav>
         <div className="cmp-cards">
           {plans.map(p => (
             <div key={p.k} className={"cmp-card" + (p.pop ? " pop" : "")} id={`cmp-${p.k}`}>

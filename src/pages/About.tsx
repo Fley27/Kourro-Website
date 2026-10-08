@@ -12,10 +12,10 @@ function Opening() {
       <div className="wrap">
         <Reveal>
           <span className="eyebrow">About Kourro</span>
-          <p className="story-land-line">
+          <h1 className="story-land-line">
             Too many owners work all day and still can't say, at night,
             <em> how much the business made.</em>
-          </p>
+          </h1>
         </Reveal>
         <Reveal delay={140}>
           <p className="story-land-lead">
@@ -93,7 +93,7 @@ function Story() {
           <div className="story-body">
             <Reveal className="story-chapter">
               <p className="story-kick">{CHAPTERS[0].kick}</p>
-              <h3 className="story-title">{CHAPTERS[0].title}</h3>
+              <h2 className="story-title">{CHAPTERS[0].title}</h2>
               <p className="story-dropcap">
                 I&rsquo;ve seen it happen too many times. I&rsquo;ve watched hardworking Haitian business owners
                 pour their entire lives into their dreams, only for a single tragedy to wipe it all
@@ -103,7 +103,7 @@ function Story() {
             </Reveal>
             <Reveal className="story-chapter">
               <p className="story-kick">{CHAPTERS[1].kick}</p>
-              <h3 className="story-title">{CHAPTERS[1].title}</h3>
+              <h2 className="story-title">{CHAPTERS[1].title}</h2>
               <p>
                 Then there are the businesses where the math just doesn&rsquo;t add up — where spending far
                 outweighs profit, yet the failure is blamed on &ldquo;the devil&rdquo; or bad luck, rather than a
@@ -112,7 +112,7 @@ function Story() {
             </Reveal>
             <Reveal className="story-chapter">
               <p className="story-kick">{CHAPTERS[2].kick}</p>
-              <h3 className="story-title">{CHAPTERS[2].title}</h3>
+              <h2 className="story-title">{CHAPTERS[2].title}</h2>
               <blockquote className="story-pull">
                 And perhaps the most painful part of all: the betrayal. The moment you realize that the
                 people in your inner circle — the ones you trusted most — have been stealing from you.
@@ -121,7 +121,7 @@ function Story() {
             </Reveal>
             <Reveal className="story-chapter">
               <p className="story-kick">{CHAPTERS[3].kick}</p>
-              <h3 className="story-title">{CHAPTERS[3].title}</h3>
+              <h2 className="story-title">{CHAPTERS[3].title}</h2>
               <p>
                 I&rsquo;m sharing this because you deserve better. You deserve a business that is stable,
                 transparent, and sustainable.

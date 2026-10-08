@@ -20,7 +20,7 @@ function Hero() {
           </Reveal>
           <Reveal delay={80}>
             <h1 className="display">
-              Every gourde <em className="hx">tracked</em>. Every cent <em className="hx">accounted </em> for.
+              Every gourde <em className="hx">tracked</em>. Every cent <em className="hx">accounted</em> for.
             </h1>
           </Reveal>
           <Reveal delay={160}>
@@ -34,7 +34,7 @@ function Hero() {
           <Reveal delay={240}>
             <div className="hero-ctas">
               <Link to="/pricing" className="btn btn-ember">
-                Start with Kourro — 30 days risk-free <Ic name="arrow" size={15} />
+                Start with Kourro — 7 days risk-free <Ic name="arrow" size={15} />
               </Link>
               <Link to="/features" className="btn btn-ghost">
                 How it works
@@ -43,7 +43,7 @@ function Hero() {
           </Reveal>
           <Reveal delay={300}>
             <p className="hero-note">
-              ✓ Works with or withoutinternet &nbsp;·&nbsp; ✓ Your data stays yours &nbsp;·&nbsp;
+              ✓ Works with or without internet &nbsp;·&nbsp; ✓ Your data stays yours &nbsp;·&nbsp;
               ✓ Support in Creole
             </p>
           </Reveal>
@@ -244,30 +244,32 @@ function Change() {
         </Reveal>
         <div className="apps">
           <Reveal dir="left">
-            <div className="app-card cap">
-              <span className="cap-line" />
-              <div className="a-ic"><Ic name="phone" size={24} /></div>
-              <div className="tag">Mobile app</div>
-              <h3 style={{ color: "var(--gold)" }}>Every sale, recorded the second it happens</h3>
+            <div className="app-col">
+              <div className="app-meta">
+                <span className="a-ic"><Ic name="phone" size={20} /></span>
+                <span className="tag">Mobile app</span>
+              </div>
+              <h3>Every sale, recorded the second it happens</h3>
               <p>
                   It’s simple: the cashier taps, the receipt prints, and the sale is saved—immediately. 
                   No internet? No problem. Kourro keeps working so you never miss a single gourde.
               </p>
-              <Link to="/features#apps" className="btn btn-ink">How the register works <Ic name="arrow" size={15} /></Link>
+              <Link to="/features#top" className="app-link">How the register works <Ic name="arrow" size={15} /></Link>
             </div>
           </Reveal>
           <Reveal dir="right" delay={120}>
-            <div className="app-card web" style={{ background: "var(--gold)", borderColor: "var(--gold)" }}>
-              <span className="cap-line" style={{ background: "var(--ink)" }} />
-              <div className="a-ic" style={{ background: "var(--ink)", color: "var(--gold)" }}><Ic name="laptop" size={24} /></div>
-              <div className="tag" style={{ color: "var(--ink)" }}>Web portal</div>
+            <div className="app-col accent">
+              <div className="app-meta">
+                <span className="a-ic"><Ic name="laptop" size={20} /></span>
+                <span className="tag">Web portal</span>
+              </div>
               <h3>See everything from your phone, tablet and computer.</h3>
               <p>
                   Whether you are at home or in another country, you can see your daily sales, 
                   check who owes you money, and track your cashiers. You don't have to wait until 
                   the end of the month to know how your business is doing.
               </p>
-              <Link to="/features#apps" className="btn btn-light">See the command center <Ic name="arrow" size={15} /></Link>
+              <Link to="/features#compare" className="app-link">See the command center <Ic name="arrow" size={15} /></Link>
             </div>
           </Reveal>
         </div>
@@ -339,7 +341,7 @@ function Plans() {
           <div className="plans-strips">
             {[
               { t: "Foundation", d: "One location, 5 users. Every gourde is accounted for.", p: "from $199/year" },
-              { t: "Pro", d: "Up to 3 locations, 10 users per store, Better Credits management", p: "from $399/year" },
+              { t: "Pro", d: "Up to 3 locations, 10 users per store, better credit management", p: "from $399/year" },
               { t: "Signature", d: "We build it around your business, franchises, multi-owner.", p: "custom quote" },
             ].map((r, i) => (
               <Reveal key={r.t} delay={i * 80}>

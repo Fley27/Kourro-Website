@@ -326,14 +326,14 @@ export function Footer() {
             <h6>Product</h6>
             <Link to="/">Home</Link>
             <Link to="/features">Features</Link>
-            <Link to="/pricing">Membership</Link>
-            <Link to="/about">About us</Link>
+            <Link to="/pricing">Pricing</Link>
+            <Link to="/about">About</Link>
           </div>
           <div className="f-col">
             <h6>Contact</h6>
-            <Link to="/contact">Contact us</Link>
+            <Link to="/contact">Contact</Link>
             <Link to="/contact#faq">FAQ</Link>
-            <Link to="/contact#custom">Custom quote</Link>
+            <Link to="/contact#demo">Custom quote</Link>
           </div>
           <div className="f-col">
             <h6>Legal</h6>

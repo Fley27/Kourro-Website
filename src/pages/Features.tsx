@@ -85,9 +85,9 @@ function Tour() {
         <Reveal>
           <div className="section-head center">
             <Eyebrow>Product tour</Eyebrow>
-            <h2 className="display" style={{ fontSize: "clamp(34px, 4.2vw, 54px)", marginTop: 18 }}>
+            <h1 className="display" style={{ fontSize: "clamp(34px, 4.2vw, 54px)", marginTop: 18 }}>
               Seven years of store problems, <em>answered in one app.</em>
-            </h2>
+            </h1>
             <p className="lead" style={{ marginTop: 18, maxWidth: 640 }}>
               Keep scrolling — the register follows you as the screen advances. Each screen is
               a real Kourro workflow your staff could run tonight.
@@ -99,11 +99,15 @@ function Tour() {
           <div className="tour-pin">
             {/* Horizontal sticky tab bar */}
             <Reveal delay={60}>
-              <div className="tour-tab-rail">
+              <div className="tour-tab-rail" role="tablist" aria-label="Product tour steps">
                 {TABS.map((t, i) => (
                   <button
                     key={t.id}
                     type="button"
+                    role="tab"
+                    id={`tour-tab-${t.id}`}
+                    aria-controls="tour-panel"
+                    aria-selected={active === t.id}
                     className={"tour-tab" + (active === t.id ? " on" : "")}
                     onClick={() => setActive(t.id)}
                   >
@@ -117,7 +121,7 @@ function Tour() {
 
             {/* Container: left content + right tablet-frame mockup */}
             <div className="tour-container">
-              <div className="tour-content">
+              <div className="tour-content" id="tour-panel" role="tabpanel" aria-labelledby={`tour-tab-${active}`}>
                 <Reveal delay={100}>
                   <div className="tour-step-anim" key={active}>
                     <span className="tour-step-num">{String(activeIndex + 1).padStart(2, "0")}</span>
