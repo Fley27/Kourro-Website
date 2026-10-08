@@ -12,9 +12,9 @@ function Opening() {
       <div className="wrap">
         <Reveal>
           <span className="eyebrow">Privacy</span>
-          <h1 className="story-land-line">
+          <p className="story-land-line">
             Your numbers are yours. <em>Even we can&rsquo;t see them.</em>
-          </h1>
+          </p>
         </Reveal>
         <Reveal delay={140}>
           <p className="story-land-lead">

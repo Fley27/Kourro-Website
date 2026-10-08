@@ -25,7 +25,7 @@ function LeadForm() {
         </p>
       </div>
       {sent ? (
-        <div role="status" aria-live="polite" style={{ padding: 22, borderRadius: 16, background: "rgba(200,162,74,0.12)", border: "1px solid rgba(200,162,74,0.4)" }}>
+        <div style={{ padding: 22, borderRadius: 16, background: "rgba(200,162,74,0.12)", border: "1px solid rgba(200,162,74,0.4)" }}>
           <b>Thank you! We received it.</b> Someone will contact you within one business day to set the
           demo time.
         </div>
@@ -192,23 +192,11 @@ function Faq() {
         <div className="faq" style={{ marginTop: 10 }}>
           {FAQS.map((f, i) => (
             <div key={i} className={"faq-item" + (open === i ? " open" : "")}>
-              <button
-                className="faq-q"
-                aria-expanded={open === i}
-                aria-controls={`faq-a-${i}`}
-                id={`faq-q-${i}`}
-                onClick={() => setOpen(open === i ? null : i)}
-              >
+              <button className="faq-q" onClick={() => setOpen(open === i ? null : i)}>
                 <span>{f.q}</span>
-                <span className="chev" aria-hidden="true">+</span>
+                <span className="chev">+</span>
               </button>
-              <div
-                className="faq-a"
-                id={`faq-a-${i}`}
-                role="region"
-                aria-labelledby={`faq-q-${i}`}
-                style={{ maxHeight: open === i ? 500 : 0 }}
-              >
+              <div className="faq-a" style={{ maxHeight: open === i ? 500 : 0 }}>
                 <p>{f.a}</p>
               </div>
             </div>

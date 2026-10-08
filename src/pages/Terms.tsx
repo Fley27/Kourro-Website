@@ -50,9 +50,9 @@ function Opening() {
       <div className="wrap">
         <Reveal>
           <span className="eyebrow">Terms of service</span>
-          <h1 className="story-land-line">
+          <p className="story-land-line">
             The rules that protect you — <em>from yourself.</em>
-          </h1>
+          </p>
         </Reveal>
         <Reveal delay={140}>
           <p className="story-land-lead">
